@@ -13,11 +13,12 @@ servers.clangd = {
     },
     root_dir = function(fname)
         local util = require'lspconfig.util'
-        local filename = util.path.is_absolute(fname) and fname or util.path.join(vim.loop.cwd(), fname)
+        -- local filename = util.path.is_absolute(fname) and fname or util.path.join(vim.loop.cwd(), fname)
         local root_pattern = util.root_pattern('compile_commands.json', 'compile_flags.txt')
 
-        return root_pattern(filename)
-        or root_pattern(vim.loop.cwd())
+        return root_pattern(vim.loop.cwd())
+        -- return root_pattern(filename)
+        -- or root_pattern(vim.loop.cwd())
     end,
     -- cmd = { "clangd", "--clang-tidy" },
 }

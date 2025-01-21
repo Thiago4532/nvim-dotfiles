@@ -159,26 +159,11 @@ return {
     
     {
         'github/copilot.vim',
-        -- cmd = { 'Copilot' },
+        cmd = { 'Copilot' },
         init = function()
             vim.g.copilot_enabled = true
         end
     },
-
-    -- {
-    --     '3rd/image.nvim',
-    --     opts = {
-    --         backend = 'kitty',
-    --         integrations = {
-    --             markdown = { enabled = false },
-    --             neorg = { enabled = false },
-    --             html = { enabled = false },
-    --             css = { enabled = false },
-    --         },
-    --         -- kitty_method = 'unicode-placeholders',
-    --     },
-    --     event = 'VeryLazy'
-    -- }
 
     -- {
     --     'zbirenbaum/copilot.lua',
@@ -195,30 +180,20 @@ return {
     --     config = from_module 'competitest',
     -- }
 
-    -- {
-    --     'exampleplugin'
-    --     init = {
-    --         require'exampleplugin'.configure {...}
-    --     },
-    --     ft = 'lua',
-    -- },
     {
         'Thiago4532/mdmath.nvim',
-        -- branch = 'dynamic-size',
-        -- dir = vim.fn.expand('~/GitHub/mdmath.nvim'),
-        opts = {
-            -- dynamic = false,
-            -- filetypes = {}
-        }
-        -- ft = 'markdown',
+        dir = vim.fn.expand('~/GitHub/mdmath.nvim'),
+        opts = function()
+            local opts = {
+                dynamic_scale = 0.8
+            }
+            if vim.loop.cwd() == vim.fn.expand('~/teste') then
+                opts.filetypes = {}
+            end
+            return opts
+        end
+            -- filetypes = {},
+            -- foreground = '#ff0000'
         -- config = false,
     },
-
-    -- {
-    --     'Mofiqul/vscode.nvim',
-    --     build = function()
-    --         return require'mdmath.build'.build_lazy()
-    --     end,
-    --     dependencies = 'mdmath.nvim'
-    -- },
 }

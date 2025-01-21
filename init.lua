@@ -47,14 +47,13 @@ require 'impl.ftdetect'
 
 require 'config.editor'
 require 'config.keybindings'
-
 cmd[[
 runtime vimscript/ui.vim
 runtime vimscript/autocmd.vim
 runtime vimscript/commands.vim
 ]]
 
-require 'impl.bad-habits'
+-- require 'impl.bad-habits'
 
 function printi(...)
     vim.print(...)
