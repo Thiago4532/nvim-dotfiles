@@ -5,7 +5,7 @@ local function map(lhs, rhs)
     return vim.keymap.set('n', lhs, rhs, { silent = true })
 end
 
-map('<space>a', function()
+map('<space><space>', function()
     require'harpoon.mark'.add_file()
 end)
 

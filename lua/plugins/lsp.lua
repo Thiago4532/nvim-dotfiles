@@ -8,27 +8,56 @@ servers.clangd = {
     --     require'lsp-tree'.on_attach(client, bufnr)
     -- end,
     capabilities = { offsetEncoding = 'utf-8' },
-    init_options = {
-        fallbackFlags = {'-DTDEBUG', '-I' .. vim.fn.expand('~/.local/include')},
-    },
-    root_dir = function(fname)
-        local util = require'lspconfig.util'
-        -- local filename = util.path.is_absolute(fname) and fname or util.path.join(vim.loop.cwd(), fname)
-        local root_pattern = util.root_pattern('compile_commands.json', 'compile_flags.txt')
+    -- init_options = {
+    --     fallbackFlags = {'-DTDEBUG', '-I' .. vim.fn.expand('~/.local/include')},
+    -- },
+    -- root_dir = function(fname)
+    --     local util = require'lspconfig.util'
+    --     -- local filename = util.path.is_absolute(fname) and fname or util.path.join(vim.loop.cwd(), fname)
+    --     local root_pattern = util.root_pattern('compile_commands.json', 'compile_flags.txt')
 
-        return root_pattern(vim.loop.cwd())
-        -- return root_pattern(filename)
-        -- or root_pattern(vim.loop.cwd())
-    end,
-    -- cmd = { "clangd", "--clang-tidy" },
+    --     return root_pattern(vim.loop.cwd())
+    --     -- return root_pattern(filename)
+    --     -- or root_pattern(vim.loop.cwd())
+    -- end,
+    -- cmd = { "/usr/local/lib/clang-p2996/bin/clangd" },
+    -- cmd = { "clangd", "--log=verbose" },
 }
 
 -- Python
-servers.pyright = {
-    handlers = {
-        ['textDocument/publishDiagnostics'] = function(...) end
-    }
+servers.basedpyright = {
+    settings = {
+        basedpyright = {
+            analysis = {
+                typeCheckingMode = "off",
+                diagnosticSeverityOverrides = {
+                    reportUnusedCallResult = "none",
+                    reportPrivateUsage = "warning",
+                },
+            },
+        },
+    },
+    on_attach = function(client, bufnr)
+        client.server_capabilities.semanticTokensProvider = nil
+    end,
+    -- handlers = {
+    --     ['textDocument/publishDiagnostics'] = function(...) end
+    -- }
 }
+
+-- C# (Omnisharp)
+-- servers.omnisharp = {
+--     cmd = { "dotnet", "/usr/lib/omnisharp/OmniSharp.dll" }
+-- }
+
+-- servers.pyright = {
+--     on_attach = function(client, bufnr)
+--         client.server_capabilities.semanticTokensProvider = nil
+--     end,
+--     handlers = {
+--         ['textDocument/publishDiagnostics'] = function(...) end
+--     }
+-- }
 
 -- Rust
 -- servers.rust_analyzer = {
@@ -49,16 +78,17 @@ servers.pyright = {
 -- }
 
 -- Golang
--- servers.gopls = {
---     capabilities = capabilities,
---     root_dir = function(fname)
---         local root_pattern = util.root_pattern('go.mod', '.git')
+servers.gopls = {
+    capabilities = capabilities,
+    root_dir = function(fname)
+        local util = require'lspconfig.util'
+        local root_pattern = util.root_pattern('go.mod', '.git')
 
---         return root_pattern(fname)
---         or root_pattern(vim.fn.getcwd())
---         or util.path.dirname(fname)
---     end
--- }
+        return root_pattern(fname)
+        or root_pattern(vim.fn.getcwd())
+        or util.path.dirname(fname)
+    end
+}
 
 -- JavaScript/TypeScript
 servers.ts_ls = {
@@ -83,7 +113,7 @@ servers.ts_ls = {
     }
 }
 
-local function main()
+local function setup()
     local capabilities = require'cmp_nvim_lsp'.default_capabilities()
     local is_executable = require'util'.is_executable
 
@@ -115,7 +145,7 @@ end
 
 return {
     'neovim/nvim-lspconfig',
-    config = main,
+    config = setup,
 
     dependencies = {
         'hrsh7th/cmp-nvim-lsp',

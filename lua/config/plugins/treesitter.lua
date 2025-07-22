@@ -1,4 +1,5 @@
 local ts_disabled = {'c', 'cpp', 'cuda'}
+-- local ts_disabled = {}
 tm_opts.ts_disabled = ts_disabled
 
 local highlight_disabled = {'bash', 'zsh', 'haskell', 'vim', 'zig'}

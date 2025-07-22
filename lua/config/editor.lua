@@ -12,8 +12,8 @@ o.relativenumber = true
 
 -- No ESC delay
 o.timeoutlen = 500
-o.ttimeout = false
--- o.ttimeoutlen = 0
+-- o.ttimeout = false
+o.ttimeoutlen = 0
 
 -- Statusline settings
 o.laststatus = 2
@@ -63,7 +63,7 @@ o.foldmethod = 'marker'
 vim.opt.foldopen:remove 'search'
 
 -- Do not ident namespace in C++
-o.cino = 'N-s,:0,g0'
+o.cino = 'N-s,:0,g0,j1'
 
 -- Split right
 o.splitright = true

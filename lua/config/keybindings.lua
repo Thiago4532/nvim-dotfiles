@@ -1,23 +1,15 @@
 local vim = vim
-local dmap = vim.keymap.set
-local mopts   = { silent = true }
-local mopts_e = { silent = true, expr = true }
-
-local function map(mode, lhs, rhs, expr)
-    local opts = expr and mopts_e or mopts
-    dmap(mode, lhs, rhs, opts)
-end
+local map = require'util'.map
 
 -- Disable Ex-mode
 map('n', 'Q', '<Nop>')
 
 -- Disable <Space>
-dmap('', '<Space>', '<Nop>')
+map('', '<Space>', '<Nop>', { silent = false })
 
 -- Remapping , to global clipboard
-dmap('', ',', '"+')
+map('', ',', '"+', { silent = false })
 
-map('n', '<F9>', ':MarkdownPreview<CR>')
 map('n', '<F1>', ':Inspect<CR>')
 map('n', '<F3>', ':noh<CR>')
 map('n', '<F4>', function() 
@@ -76,7 +68,7 @@ map({'n', 'x'}, 'j', function()
     else
         return 'j'
     end
-end, true)
+end, { expr = true })
 
 map({'n', 'x'}, 'k', function()
     if vim.v.count > 1 then
@@ -84,7 +76,7 @@ map({'n', 'x'}, 'k', function()
     else
         return 'k'
     end
-end, true)
+end, { expr = true })
 
 -- why not?
 map('n', 'Y', 'y$')
@@ -107,14 +99,14 @@ map('n', 'U', ":UndotreeToggle<CR>")
 map('n', '<leader>=', '=`]')
 
 -- repeat last search command on replace mode
-dmap('n', '<leader>R', 'q/kyy:q<CR>:%s/<C-r>"')
+map('n', '<leader>R', 'q/kyy:q<CR>:%s/<C-r>"', { silent = false })
 
 -- center cursor
 map('n', 'zg', require'util'.center_cursor)
 
 -- why is the opposite the default?
-dmap('', "`", "'")
-dmap('', "'", "`")
+map('', "`", "'", { silent = false })
+map('', "'", "`", { silent = false })
 
 -- copy whole file
 map('n', 'cpy', ':%y+<CR>')

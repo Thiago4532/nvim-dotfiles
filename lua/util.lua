@@ -1,5 +1,4 @@
 local vim = vim
-
 local api = vim.api
 local uv = vim.uv
 local bo = vim.bo
@@ -196,5 +195,57 @@ M.bark = function()
 
     M.spawn_bg('bark', {silent = true})
 end
+
+local vim_map = vim.keymap.set
+
+local function clone_opts(opts, default)
+    default = default or { silent = true }
+    if not opts then
+        return default
+    end
+
+    local silent = opts.silent
+    local expr = opts.expr
+    local buffer = opts.buffer
+    local remap = opts.remap
+    local desc = opts.desc
+    local replace_keycodes = opts.replace_keycodes
+
+    return {
+        silent = silent ~= nil and silent or (default.silent ~= false),
+        expr = expr ~= nil and expr or default.expr,
+        buffer = buffer ~= nil and buffer or default.buffer,
+        remap = remap ~= nil and remap or default.remap,
+        desc = desc ~= nil and desc or default.desc,
+        replace_keycodes = replace_keycodes ~= nil and replace_keycodes or default.replace_keycodes,
+    }
+end
+
+M.new_mapper = function(opts)
+    local default_opts = clone_opts(opts)
+
+    return function(mode, lhs, rhs, opts)
+        opts = opts
+            and clone_opts(opts, default_opts)
+            or default_opts
+
+        return vim_map(mode, lhs, rhs, opts)
+    end
+end
+
+M.new_mapper_with_mode = function(mode, opts)
+    local default_opts = clone_opts(opts)
+
+    return function(lhs, rhs, opts)
+        opts = opts
+            and clone_opts(opts, default_opts)
+            or default_opts
+
+        return vim_map(mode, lhs, rhs, opts)
+    end
+end
+
+M.map  = M.new_mapper {}
+M.bmap = M.new_mapper { buffer = true }
 
 return M

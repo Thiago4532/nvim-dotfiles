@@ -62,3 +62,9 @@ function printi(...)
 
     -- print(unpack(tbl, 1, n))
 end
+
+-- temporary workaround for deprecations, only in this version
+-- since I want to see deprecation warnings in the future.
+if tostring(vim.version()) == '0.12.0-dev+gc7d8812ca7' then
+    vim.deprecate = function() end
+end

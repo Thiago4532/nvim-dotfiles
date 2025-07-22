@@ -1,4 +1,4 @@
--- TODO: In the future, use a more modular setup instead of loading everything
+
 -- when requiring the configuration (similiar to what all plugins do using a setup function
 
 local function from_module(name)
@@ -108,6 +108,16 @@ return {
         version = false, -- set this if you want to always pull the latest change
         opts = {
             hints = { enabled = false },
+            provider = 'openai-o4-mini',
+            gemini = {
+                model = "gemini-2.5-pro-exp-03-25"
+            },
+            vendors = {
+                ["openai-o4-mini"] = {
+                    __inherited_from = "openai",
+                    model = "o4-mini",
+                },
+            }
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = "make",
@@ -117,6 +127,17 @@ return {
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
         }
+    },
+
+    {
+        "stevearc/dressing.nvim",
+        -- opts = {
+        --     input = {
+        --         win_options = {
+        --             sidescrolloff = 10,
+        --         }
+        --     }
+        -- }
     },
 
     -- Repeat commands using '.',
@@ -157,22 +178,24 @@ return {
         dependencies = 'nvim-treesitter/nvim-treesitter'
     },
     
-    {
-        'github/copilot.vim',
-        cmd = { 'Copilot' },
-        init = function()
-            vim.g.copilot_enabled = true
-        end
-    },
-
     -- {
-    --     'zbirenbaum/copilot.lua',
-    --     cmd = { "Copilot" },
-    --     event = "InsertEnter",
-    --     config = function()
-    --         require("copilot").setup({})
-    --     end,
+    --     'github/copilot.vim',
+    --     -- cmd = { 'Copilot' },
+    --     init = function()
+    --         vim.g.copilot_enabled = true
+    --         vim.g.copilot_filetypes = {
+    --             ['AvanteInput'] = false
+    --         }
+    --     end
     -- },
+    
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     event = "InsertEnter",
+    --     config = from_module 'copilot',
+    -- },
+
 
     -- {
     --     'xeluxee/competitest.nvim',
