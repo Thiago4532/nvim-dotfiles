@@ -92,20 +92,20 @@ return {
     --     config = from_module 'copilot',
     -- },
 
-    {
-        'Thiago4532/mdmath.nvim',
-        dir = vim.fn.expand('~/GitHub/mdmath.nvim'),
-        opts = function()
-            local opts = {
-                dynamic_scale = 0.8
-            }
-            if vim.loop.cwd() == vim.fn.expand('~/teste') then
-                opts.filetypes = {}
-            end
-            return opts
-        end
-            -- filetypes = {},
-            -- foreground = '#ff0000'
-        -- config = false,
-    },
+    -- {
+    --     'Thiago4532/mdmath.nvim',
+    --     dir = vim.fn.expand('~/GitHub/mdmath.nvim'),
+    --     opts = function()
+    --         local opts = {
+    --             dynamic_scale = 0.8
+    --         }
+    --         if vim.loop.cwd() == vim.fn.expand('~/teste') then
+    --             opts.filetypes = {}
+    --         end
+    --         return opts
+    --     end
+    --         -- filetypes = {},
+    --         -- foreground = '#ff0000'
+    --     -- config = false,
+    -- },
 }
