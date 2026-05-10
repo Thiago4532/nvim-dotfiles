@@ -11,6 +11,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- vim.treesitter.language.register('json', { 'jsonc' })
+
+-- temporary workaround for deprecations, only in this version
+-- since I want to see deprecation warnings in the future.
+if tostring(vim.version()) == '0.11.7+v0.11.7' then
+    vim.deprecate = function() end
+end
+
 local g = vim.g
 local cmd = vim.cmd
 local fn = vim.fn
@@ -63,8 +71,16 @@ function printi(...)
     -- print(unpack(tbl, 1, n))
 end
 
--- temporary workaround for deprecations, only in this version
--- since I want to see deprecation warnings in the future.
-if tostring(vim.version()) == '0.12.0-dev+gc7d8812ca7' then
-    vim.deprecate = function() end
-end
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = {
+        'javascript',
+        'typescript',
+        'json',
+        'jsonc',
+        'markdown',
+        'markdown_inline',
+        'gitignore',
+        'go',
+    },
+    callback = function() vim.treesitter.start() end,
+})

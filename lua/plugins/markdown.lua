@@ -31,36 +31,72 @@ do
     }
 end
 
--- plugin: render-markdown.nvim
+-- plugin: live-preview.nvim
 do
-    local file_types = {'markdown', 'Avante'}
-    -- local file_types = {'Avante'}
-    
-    local function setup(_, opts)
+    local file_types = {'markdown', 'asciidoc', 'html', 'svg'}
+
+    local function setup()
         create_autocmd({'FileType'}, {
             pattern = file_types,
             callback = function()
-                bmap('n', '<space>rm', ':RenderMarkdown buf_toggle<CR>')
+                bmap('n', '<F10>', ':LivePreview start<CR>')
             end
         })
-
-        return require'render-markdown'.setup {
-            file_types = file_types
-        }
     end
-    
+
     M[#M + 1] = {
-        'MeanderingProgrammer/render-markdown.nvim',
+        'brianhuster/live-preview.nvim',
+        cmd = 'LivePreview',
+        dependencies = {
+            'nvim-telescope/telescope.nvim',
+        },
         config = setup,
         ft = file_types,
     }
 end
 
--- plugin: markview.nvim
+-- plugin: render-markdown.nvim
 -- do
---     -- M[#M + 1] = {
---     --     "OXY2DEV/markview.nvim",
---     -- }
+--     local file_types = {'markdown', 'Avante'}
+--     -- local file_types = {'Avante'}
+--
+--     local function setup(_, opts)
+--         create_autocmd({'FileType'}, {
+--             pattern = file_types,
+--             callback = function()
+--                 bmap('n', '<space>rm', ':RenderMarkdown buf_toggle<CR>')
+--             end
+--         })
+--
+--         return require'render-markdown'.setup {
+--             file_types = file_types
+--         }
+--     end
+--
+--     M[#M + 1] = {
+--         'MeanderingProgrammer/render-markdown.nvim',
+--         config = setup,
+--         ft = file_types,
+--     }
 -- end
+
+-- plugin: markview.nvim
+do
+    local file_types = {'markdown'}
+
+    local function setup() 
+        require'markview'.setup({
+            preview = { enable = false }
+        });
+
+        vim.api.nvim_set_keymap('n', '<leader>m', '<CMD>Markview<CR>', { desc = 'Toggles `markview` previews globally.' });
+    end
+
+    M[#M + 1] = {
+        "OXY2DEV/markview.nvim",
+        lazy = false,
+        config = setup
+    }
+end
 
 return M
